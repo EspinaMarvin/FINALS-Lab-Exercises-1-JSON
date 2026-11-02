@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 5 - PHP + JSON + AJAX</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Send Data to PHP with AJAX</h2>
+
+    <form id="userForm">
+        <label>Your Name:</label>
+        <input type="text" id="nameInput" required placeholder="Enter your name">
+
+        <button type="submit">Send to Server</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        const form = document.getElementById('userForm');
+        const resultDiv = document.getElementById('result');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+
+            const name = document.getElementById('nameInput').value.trim();
+
+            fetch('lab5_backend.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ fullname: name })
+            })
+            .then(response => response.json())
+            .then(data => {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `
+                    <strong>Status:</strong> ${data.status}<br>
+                    <strong>Message:</strong> ${data.message}
+                `;
+            })
+            .catch(error => {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `<span class="error-text">Error: ${error.message}</span>`;
+            });
+        });
+    </script>
+</body>
+</html>
