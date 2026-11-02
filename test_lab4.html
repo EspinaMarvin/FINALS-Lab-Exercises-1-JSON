@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Lab 4</title>
+</head>
+<body>
+    <div id="output"></div>
+
+    <script>
+        fetch('lab4_input.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: 'admin',
+                password: '1234'
+            })
+        })
+        .then(response => response.text())
+        .then(result => {
+            document.getElementById('output').innerHTML = result;
+        })
+        .catch(error => {
+            document.getElementById('output').innerHTML = 'Error: ' + error.message;
+        });
+    </script>
+</body>
+</html>
